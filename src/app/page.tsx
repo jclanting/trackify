@@ -1,101 +1,89 @@
-import Image from "next/image";
+import Navbar from "@/components/Navbar";
+import PreviewCard from "@/components/PreviewCard";
+import { Input } from "@/components/ui/input";
+import { H3 } from "@/components/ui/typography";
 
-export default function Home() {
+const Home = () => {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
+    <div className="flex flex-col px-12 py-10 gap-5">
+      <H3>Browse Tracklists</H3>
+      <Input type="text" placeholder="Search for artists or events" className="w-1/3 border-2" />
+      <div className="grid grid-cols-4 gap-y-6">
+        <PreviewCard 
+          artistImg="/images/illenium.jpeg"
+          artist="ILLENIUM"
+          event="Electric Daisy Carnival Las Vegas"
+          date={new Date(2024, 4, 17)}
+          user="Piinoy"
+          identifiedTracks={56}
+          totalTracks={59}
         />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        <PreviewCard  
+          artistImg="/images/calvin_harris.jpg"
+          artist="Calvin Harris"
+          event="Ultra Music Festival Miami"
+          date={new Date(2024, 2, 24)}
+          user="Piinoy"
+          identifiedTracks={28}
+          totalTracks={28}
+        />
+        <PreviewCard  
+          artistImg="/images/porter_robinson.png"
+          artist="Porter Robinson"
+          event="Lights All Night"
+          date={new Date(2022, 11, 29)}
+          user="Piinoy"
+          identifiedTracks={74}
+          totalTracks={78}
+        />
+        <PreviewCard  
+          artistImg="/images/crankdat.jpg"
+          artist="Crankdat"
+          event="Lost Lands Festival"
+          date={new Date(2024, 8, 21)}
+          user="Piinoy"
+          identifiedTracks={84}
+          totalTracks={91}
+        />
+        <PreviewCard  
+          artistImg="/images/galantis.jpg"
+          artist="Galantis"
+          event="Lollapalooza Chicago"
+          date={new Date(2024, 7, 2)}
+          user="Piinoy"
+          identifiedTracks={52}
+          totalTracks={52}
+        />
+        <PreviewCard  
+          artistImg="/images/alesso.jpg"
+          artist="Alesso"
+          event="Tomorrowland Weekend 1"
+          date={new Date(2024, 6, 21)}
+          user="Piinoy"
+          identifiedTracks={32}
+          totalTracks={37}
+        />
+        <PreviewCard  
+          artistImg="/images/martin_garrix.jpeg"
+          artist="Martin Garrix"
+          event="Zenless Zone Zero"
+          date={new Date(2024, 7, 23)}
+          user="Piinoy"
+          identifiedTracks={64}
+          totalTracks={67}
+        />
+        <PreviewCard  
+          artistImg="/images/tiesto.jpg"
+          artist="Tiësto"
+          event="Electric Zoo"
+          date={new Date(2023, 8, 3)}
+          user="Piinoy"
+          identifiedTracks={48}
+          totalTracks={48}
+        />
+      </div>
     </div>
-  );
+  )
 }
+
+export default Home;
