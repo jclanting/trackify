@@ -12,12 +12,17 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/context/AuthContext";
-import { signInWithEmail, signInWithGoogle } from "@/lib/firebase/auth";
+import { signInWithEmail, signInWithGoogle, signInWithUsername } from "@/lib/firebase/auth";
+import { hasUsername } from "@/lib/firebase/usernameService";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 const signInFormSchema = z.object({
-  username: z
-    .string().min(1, { message: "Please enter a valid username"}),
+  usernameOrEmail: z
+    .string()
+    .min(1, { message: "Please enter a valid username or email" })
+    .refine((val) => z.string().email().safeParse(val).success || val.length >= 4, {
+      message: "Please enter a valid username or email",
+    }),
   password: z
     .string().min(1, { message: "Please enter a valid password"})
 })
@@ -25,29 +30,50 @@ const signInFormSchema = z.object({
 const SignIn = () => {
 
   const router = useRouter()
-  const { updateUser } = useAuth()
+  const { updateUser, currentUser } = useAuth()
   
   const signInForm = useForm<z.infer<typeof signInFormSchema>>({
     resolver: zodResolver(signInFormSchema),
     defaultValues: {
-      username: "",
+      usernameOrEmail: "",
       password: ""
     }
   })
 
   const handleSignIn = async (values: z.infer<typeof signInFormSchema>) => {
-    try {
-      const userCredential = await signInWithEmail(values.username, values.password, updateUser)
-      router.push("/")
-    } catch (error) {
-      console.error(error)
+
+    const isEmail = z.string().email().safeParse(values.usernameOrEmail).success
+
+    if (isEmail) {
+      try {
+        const userCredential = await signInWithEmail(values.usernameOrEmail, values.password, updateUser)
+        if (userCredential.user) {
+          const hasUsernameField = await hasUsername(userCredential.user.uid)
+          hasUsernameField ? router.push("/") : router.push("select-username")
+        }
+      } catch (error) {
+        console.error(error)
+      }
+    } else {
+      try {
+        const userCredential = await signInWithUsername(values.usernameOrEmail, values.password, updateUser)
+        if (userCredential.user) {
+          const hasUsernameField = await hasUsername(userCredential.user.uid)
+          hasUsernameField ? router.push("/") : router.push("select-username")
+        }
+      } catch (error) {
+        console.error(error)
+      }
     }
   }
 
   const handleGoogleSignIn = async () => {
     try {
-      const userCredential = await signInWithGoogle()
-      router.push("/")
+      const userCredential = await signInWithGoogle(updateUser)
+      if (userCredential.user) {
+        const hasUsernameField = await hasUsername(userCredential.user.uid)
+        hasUsernameField ? router.push("/") : router.push("select-username")
+      }
     } catch (error) {
       console.error(error)
     }
@@ -65,12 +91,12 @@ const SignIn = () => {
             <form onSubmit={signInForm.handleSubmit(handleSignIn)} className="space-y-8">
               <FormField
                 control={signInForm.control}
-                name="username"
+                name="usernameOrEmail"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Username</FormLabel>
+                    <FormLabel>Username or Email</FormLabel>
                     <FormControl>
-                      <Input placeholder="Username" {...field} />
+                      <Input placeholder="Username or Email" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
