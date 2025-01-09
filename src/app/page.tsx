@@ -1,4 +1,4 @@
-import Navbar from "@/components/Navbar";
+"use client"
 import PreviewCard from "@/components/PreviewCard";
 import { Input } from "@/components/ui/input";
 import { H3 } from "@/components/ui/typography";

@@ -1,17 +1,26 @@
 import { format } from "date-fns";
-import { Calendar, MapPin, Music, Share, User } from "lucide-react";
+import {
+  Calendar, EllipsisVertical, ExternalLink, MapPin, Music, Share2, User
+} from "lucide-react";
 import Image from "next/image";
 
-import { P } from "./ui/typography";
+import { useToast } from "@/hooks/use-toast";
+
+import { Button } from "./ui/button";
+import {
+  DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger
+} from "./ui/dropdown-menu";
 
 interface PreviewCardProps {
+  id: string,
   artistImg: string,
   artist: string,
   event: string,
   date: Date,
   user: string,
   identifiedTracks: number,
-  totalTracks: number
+  totalTracks: number,
+  onClick?: () => void
 }
 
 interface CardInfoProps {
@@ -30,10 +39,49 @@ const CardInfo: React.FC<CardInfoProps> = ({ Icon, text }) => {
   )
 }
 
-const PreviewCard : React.FC<PreviewCardProps> = ({ artistImg, artist, event, date, user, identifiedTracks, totalTracks }) => {
+const PreviewCard : React.FC<PreviewCardProps> = ({ id, artistImg, artist, event, date, user, identifiedTracks, totalTracks, onClick }) => {
+
+  const { toast } = useToast()
+
+  const handleShareClick = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    toast({
+      title: "Tracklist copied to clipboard!",
+      description: "Share this link with others!",
+      duration: 5000
+    })
+    navigator.clipboard.writeText(`localhost:3000/tracklists/${id}`)
+  }
+
+  const handleOpenClick = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    window.open(`http://localhost:3000/tracklists/${id}`, "_blank")
+  }
+
   return (
-    <div className="flex flex-col w-72 h-[25rem] p-6 border border-slate-200 rounded-md drop-shadow transition-all ease-in-out duration-100 hover:scale-105 hover:shadow-lg">
-      <Share className="absolute w-5 h-5 top-4 right-4" />
+    <div onClick={onClick} className="flex flex-col w-72 h-[25rem] p-6 border border-slate-200 rounded-md drop-shadow transition-all ease-in-out duration-100 hover:scale-105 hover:shadow-lg">
+      <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          variant="ghost"
+          size="icon"
+          className="absolute w-8 h-8 top-3 right-3 p-0 focus-visible:ring-0 focus:ring-0 focus:outline-none focus-visible:ring-offset-0"
+          onClick={handleShareClick}
+        >
+          <EllipsisVertical className="!size-5"/>
+        </Button>
+      </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuItem onClick={handleShareClick}>
+            <Share2 />
+            <span>Share</span>
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={handleOpenClick}>
+            <ExternalLink />
+            <span>Open in new tab</span>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
       <div className="flex flex-col">
         <div className="flex justify-center w-full h-full">
           <div className="relative w-36 h-36 m-6 drop-shadow">

@@ -1,8 +1,7 @@
 import "./globals.css";
 
-import { useRouter } from "next/navigation";
-
 import Navbar from "@/components/Navbar";
+import { Toaster } from "@/components/ui/toaster";
 import AuthProvider from "@/context/AuthContext";
 
 export const metadata = {
@@ -19,6 +18,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <main>
             {children}
           </main>
+          <Toaster />
         </AuthProvider>
       </body>
     </html>
